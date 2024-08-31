@@ -13,12 +13,33 @@ client = OpenAI(
     api_key = MOONSHOT_API_KEY,
     base_url = "https://api.moonshot.cn/v1",
 )
+
+# 示例用户和新商品
+user = {
+    "name": "张三",
+    "phone_number": "1234567890",
+    "browsing_history": ["运动鞋", "跑步机"],
+    "purchase_history": ["健身器材"],
+    "inquiry_history": ["需要更多运动装备"]
+}
+
+# new_product = "耐克S1000 运动鞋"
+new_product = "macbook pro"
+
+question = (
+    f"用户的兴趣数据如下：\n"
+    f"浏览记录：{user['browsing_history']}\n"
+    f"购买记录：{user['purchase_history']}\n"
+    f"咨询记录：{user['inquiry_history']}\n"
+    f"新商品信息：{new_product}\n\n"
+    f"请判断这个用户是否可能喜欢这款新商品。如果可能，请用'喜欢'回复；如果不可能，请用'不喜欢'回复"
+)
  
 completion = client.chat.completions.create(
     model = "moonshot-v1-8k",
     messages = [
-        {"role": "system", "content": "你是 Kimi，由 Moonshot AI 提供的人工智能助手，你更擅长中文和英文的对话。你会为用户提供安全，有帮助，准确的回答。同时，你会拒绝一切涉及恐怖主义，种族歧视，黄色暴力等问题的回答。Moonshot AI 为专有名词，不可翻译成其他语言。"},
-        {"role": "user", "content": "你好，我叫李雷，1+1等于多少？"}
+        {"role": "system", "content": "你是电商app的助手，我问你问题时你只需要回复喜欢或不喜欢就行了，不需要给出具体的原因。"},
+        {"role": "user", "content": question}
     ],
     temperature = 0.3,
 )
